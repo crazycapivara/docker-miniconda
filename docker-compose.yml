@@ -1,7 +1,7 @@
 version: "2"
 services:
   jupyter-miniconda:
-    image: crazycapivara/miniconda3
+    image: crazycapivara/miniconda3-jupyter
     ports:
       - "8889:8888"
     restart: always
