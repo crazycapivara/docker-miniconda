@@ -4,11 +4,10 @@ LABEL maintainer="Stefan Kuethe <crazycapivara@gmail.com>"
 
 USER root
 
-COPY ./requirements.txt /requirements.txt
+COPY ./pandas.yml /pandas.yml
 
-RUN conda install --file /requirements.txt -y --quiet \
-  && conda clean -afy \
-  && rm /requirements.txt
+RUN conda env update -n base --file /pandas.yml --quiet \
+  && conda clean -afy
 
 USER hopefulhopper
 
