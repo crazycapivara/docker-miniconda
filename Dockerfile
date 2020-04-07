@@ -2,14 +2,21 @@ FROM continuumio/miniconda3
 
 LABEL maintainer="<crazycapivara@gmail.com>"
 
-RUN /opt/conda/bin/conda install jupyter -y --quiet \
-	&& mkdir /opt/notebooks
+RUN conda install jupyter -y
+# --quiet
 
 EXPOSE 8888
 
-# remove auth
-RUN /opt/conda/bin/jupyter notebook --allow-root --generate-config \
-	&& echo "c.NotebookApp.token = ''" >> ~/.jupyter/jupyter_notebook_config.py
+RUN useradd hopefulhopper --create-home --shell /bin/bash \
+  && echo hopefulhopper:hopefulhopper | chpasswd \
+  && usermod -a -G staff hopefulhopper
 
-CMD ["/opt/conda/bin/jupyter",  "notebook",  "--notebook-dir=/opt/notebooks",  "--ip='*'",  "--allow-root", "--port=8888",  "--no-browser"]
+WORKDIR /home/hopefulhopper
+
+USER hopefulhopper
+
+RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
+  && echo "conda activate base" >> ~/.bashrc
+
+CMD [ "jupyter", "notebook", "--ip='*'", "--port=8888", "--no-browser" ]
 
