@@ -5,6 +5,8 @@ dependencies:
   - pip
   - geopandas
   - folium
+  - pydeck
+  - psycopg2
   - pip:
     - osmium
 
